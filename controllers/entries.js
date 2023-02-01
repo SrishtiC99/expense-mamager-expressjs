@@ -8,8 +8,12 @@ const getEntry = (req, res) => {
 }
 
 const createEntry = async (req, res) => {
-  const entry = await Entry.create(req.body);
-  res.status(201).send({entry});
+  try {
+    const entry = await Entry.create(req.body);
+    res.status(201).send({entry});
+  } catch (err) {
+    res.json({msg: err});
+  }
 }
 
 const updateEntry = (req, res) => {

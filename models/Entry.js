@@ -1,11 +1,28 @@
 const mongoose = require('mongoose');
 
 const entrySchema = new mongoose.Schema({
-  userId: String,
-  amountSpent: Number,
-  expenseTag: String,
-  date: Date,
-  online: Boolean
+  userId: {
+    type: String,
+    required: [true, 'must provide name'],
+    trim: true
+  },
+  amountSpent: {
+    type: Number,
+    required: [true, 'must provide amount']
+  },
+  expenseTag: {
+    type: String,
+    required: [true, 'must provide tag'],
+    trim: true
+  },
+  date: {
+    type: Date,
+    required: [true, 'must provide date']
+  },
+  online: {
+    type: Boolean,
+    default: false
+  }
 });
 
 const model = mongoose.model("Entry", entrySchema);
