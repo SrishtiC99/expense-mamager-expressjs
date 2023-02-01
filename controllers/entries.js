@@ -1,4 +1,4 @@
-
+const Entry =  require('../models/Entry');
 const getAllEntries = (req, res) => {
   res.send("get All Entries");
 }
@@ -7,8 +7,9 @@ const getEntry = (req, res) => {
   res.json({id: req.params.id});
 }
 
-const createEntry = (req, res) => {
-  res.json(req.body);
+const createEntry = async (req, res) => {
+  const entry = await Entry.create(req.body);
+  res.status(201).send({entry});
 }
 
 const updateEntry = (req, res) => {
