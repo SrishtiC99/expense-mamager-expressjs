@@ -4,19 +4,19 @@ const getAllEntries = (req, res) => {
 }
 
 const getEntry = (req, res) => {
-  res.end("get a single Entry");
+  res.json({id: req.params.id});
 }
 
 const createEntry = (req, res) => {
-  res.end("Create Entry");
+  res.json(req.body);
 }
 
 const updateEntry = (req, res) => {
-  res.end("Update Entry");
+  res.send("Update Entry");
 }
 
 const deleteEntry = (req, res) => {
-  res.end("Delete Entry");
+  res.send("Delete Entry");
 }
 
 module.exports = {
