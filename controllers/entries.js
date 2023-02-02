@@ -56,6 +56,16 @@ const deleteEntry = async (req, res) => {
   }
 }
 
+const getUserEntries = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const entries = await Entry.find({userId: userId});
+    res.status(201).json({entries});
+  } catch (err) {
+    res.json({msg: err});
+  }
+}
+
 module.exports = {
-  getAllEntries, getEntry, createEntry, updateEntry, deleteEntry
+  getAllEntries, getEntry, createEntry, updateEntry, deleteEntry, getUserEntries
 }
