@@ -1,5 +1,6 @@
 const express = require('express');
 const entriesRoute = require('./routes/entries');
+const usersRoute = require('./routes/users');
 const connectDB = require('./db/connect');
 require('dotenv').config();
 
@@ -8,11 +9,8 @@ const app = express();
 app.use(express.json());
 
 // routes
-app.get('/hello', (req, res) => {
-  res.send("Hello");
-});
-
 app.use('/api/v1/entries', entriesRoute);
+app.use('/api/v1/users', usersRoute);
 
 const PORT = 3000;
 const start = async () => {
