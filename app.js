@@ -5,6 +5,7 @@ const tagsRoute = require('./routes/tags');
 const connectDB = require('./db/connect');
 require('dotenv').config();
 const notFound = require('./middlewares/not-found');
+const errorHandler = require('./middlewares/error-handler');
 
 const app = express();
 // middlewares
@@ -15,6 +16,7 @@ app.use('/api/v1/entries', entriesRoute);
 app.use('/api/v1/users', usersRoute);
 app.use('/api/v1/tags', tagsRoute);
 app.use(notFound);
+app.use(errorHandler);
 
 const PORT = 3000;
 const start = async () => {
