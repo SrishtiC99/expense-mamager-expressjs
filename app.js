@@ -9,12 +9,12 @@ const notFound = require('./middlewares/not-found');
 const app = express();
 // middlewares
 app.use(express.json());
-app.use(notFound);
 
 // routes
 app.use('/api/v1/entries', entriesRoute);
 app.use('/api/v1/users', usersRoute);
 app.use('/api/v1/tags', tagsRoute);
+app.use(notFound);
 
 const PORT = 3000;
 const start = async () => {
