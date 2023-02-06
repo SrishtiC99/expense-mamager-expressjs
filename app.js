@@ -4,10 +4,12 @@ const usersRoute = require('./routes/users');
 const tagsRoute = require('./routes/tags');
 const connectDB = require('./db/connect');
 require('dotenv').config();
+const notFound = require('./middlewares/not-found');
 
 const app = express();
 // middlewares
 app.use(express.json());
+app.use(notFound);
 
 // routes
 app.use('/api/v1/entries', entriesRoute);
