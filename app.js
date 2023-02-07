@@ -18,12 +18,12 @@ app.use('/api/v1/tags', tagsRoute);
 app.use(notFound);
 app.use(errorHandler);
 
-const PORT = 3000;
+const port = process.env.PORT || 3000;
 const start = async () => {
   try {
     await connectDB(process.env.MONGO_URI);
     console.log("connected to db")
-    app.listen(PORT, () => console.log(`Server is running at port: ${PORT}`));
+    app.listen(port, () => console.log(`Server is running at port: ${port}`));
   } catch (e) {
     console.log(e);
   }
