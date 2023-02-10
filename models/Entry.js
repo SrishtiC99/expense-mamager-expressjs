@@ -17,7 +17,7 @@ const entrySchema = new mongoose.Schema({
   },
   date: {
     type: Date,
-    required: [true, 'must provide date']
+    default: Date.now()
   },
   online: {
     type: Boolean,
