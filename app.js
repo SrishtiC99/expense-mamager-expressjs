@@ -1,8 +1,11 @@
 const express = require('express');
+// Roters
 const entriesRoute = require('./routes/entries');
 const usersRoute = require('./routes/users');
 const tagsRoute = require('./routes/tags');
 const frontendRoute = require('./routes/front-end');
+const authRoute = require('./routes/auth');
+
 const connectDB = require('./db/connect');
 require('dotenv').config();
 const notFound = require('./middlewares/not-found');
@@ -17,7 +20,8 @@ app.use(express.json());
 app.use('/api/v1/entries', entriesRoute);
 app.use('/api/v1/users', usersRoute);
 app.use('/api/v1/tags', tagsRoute);
-app.use('/api/v1', frontendRoute);
+app.use('/api/v1/home', frontendRoute);
+app.use('/api/v1/auth', authRoute);
 app.use(notFound);
 app.use(errorHandler);
 
