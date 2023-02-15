@@ -10,6 +10,7 @@ const connectDB = require('./db/connect');
 require('dotenv').config();
 const notFound = require('./middlewares/not-found');
 const errorHandler = require('./middlewares/error-handler');
+const authenticateUser = require('./middlewares/auth');
 
 const app = express();
 // middlewares
@@ -17,9 +18,9 @@ app.use(express.static('./public'));
 app.use(express.json());
 
 // routes
-app.use('/api/v1/entries', entriesRoute);
+app.use('/api/v1/entries', authenticateUser, entriesRoute);
 app.use('/api/v1/users', usersRoute);
-app.use('/api/v1/tags', tagsRoute);
+app.use('/api/v1/tags', authenticateUser, tagsRoute);
 app.use('/api/v1/home', frontendRoute);
 app.use('/api/v1/auth', authRoute);
 app.use(notFound);

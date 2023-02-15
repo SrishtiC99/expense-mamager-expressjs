@@ -2,10 +2,10 @@ const Entry =  require('../models/Entry');
 const asyncWrapper = require('../middlewares/async');
 
 const getAllEntries = asyncWrapper(async (req, res) => {
-  const {userId, expenseTag, online, sort, fields} = req.query;
+  const {expenseTag, online, sort, fields} = req.query;
   // query
   const queryObject = {};
-  if(userId) queryObject.userId = userId;
+  queryObject.createdBy = req.user.userId;
   if(expenseTag) {
     queryObject.expenseTag = {$regex: expenseTag, $options: 'i'};
   }
@@ -20,7 +20,7 @@ const getAllEntries = asyncWrapper(async (req, res) => {
     result = result.sort(sortList);
   }
   else {
-    result = result.sort('date');
+    result = result.sort('createdAt');
   }
   // fields
   if(fields) {
@@ -31,14 +31,17 @@ const getAllEntries = asyncWrapper(async (req, res) => {
   const limit = Number(req.query.limit) || 10;
   const skip = (page-1) * limit;
   result = result.skip(skip).limit(limit);
-  
+
   const entries = await result;
   res.status(201).json({entries, count: entries.length});
 })
 
 const getEntry = asyncWrapper(async (req, res) => {
-  const id = req.params.id;
-  const entry = await Entry.findById(id);
+  const {user: {userId}, params: {id: entryId}} = req;
+  const entry = await Entry.findOne({
+    _id: entryId,
+    createdBy: userId
+  });
   if(!entry) {
     return res.status(404).json(`entry with id: ${id} not found`);
   }
@@ -46,13 +49,14 @@ const getEntry = asyncWrapper(async (req, res) => {
 })
 
 const createEntry = asyncWrapper(async (req, res) => {
+  req.body.createdBy = req.user.userId;
   const entry = await Entry.create(req.body);
   res.status(201).json({entry});
 })
 
 const updateEntry = asyncWrapper(async (req, res) => {
-  const id = req.params.id;
-  const entry = await Entry.findOneAndUpdate({_id: id}, req.body, {new: true, runValidators: true});
+  const {user: {userId}, params: {id: entryId}} = req;
+  const entry = await Entry.findOneAndUpdate({_id: entryId, createdBy: userId}, req.body, {new: true, runValidators: true});
   if(!entry) {
     return res.status(404).json(`entry with id: ${id} not found`);
   }
@@ -60,20 +64,14 @@ const updateEntry = asyncWrapper(async (req, res) => {
 })
 
 const deleteEntry = asyncWrapper(async (req, res) => {
-  const id = req.params.id;
-  const entry = await Entry.deleteOne({_id: id});
+  const {user: {userId}, params: {id: entryId}} = req;
+  const entry = await Entry.deleteOne({_id: entryId, createdBy: userId});
   if(!entry.deletedCount) {
     return res.status(404).json(`entry with id: ${id} not found`);
   }
   res.status(201).json({entry});
 })
 
-const getUserEntries = asyncWrapper(async (req, res) => {
-  const userId = req.params.id;
-  const entries = await Entry.find({userId: userId});
-  res.status(201).json({entries});
-})
-
 module.exports = {
-  getAllEntries, getEntry, createEntry, updateEntry, deleteEntry, getUserEntries
+  getAllEntries, getEntry, createEntry, updateEntry, deleteEntry
 }

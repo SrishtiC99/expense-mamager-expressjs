@@ -4,6 +4,5 @@ const {getAllEntries, getEntry, createEntry, updateEntry, deleteEntry, getUserEn
 
 router.route('/').get(getAllEntries).post(createEntry);
 router.route('/:id').get(getEntry).patch(updateEntry).delete(deleteEntry);
-router.route('/user/:id').get(getUserEntries);
 
 module.exports = router;
