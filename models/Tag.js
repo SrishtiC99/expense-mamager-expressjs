@@ -3,13 +3,13 @@ const mongoose = require('mongoose');
 const tagSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, 'must provide tag name'],
+    required: [true, 'Please provide tag name'],
     trim: true
   },
-  userId: {
-    type: String,
-    required: [true, 'must provide userId'],
-    trim: true
+  createdBy: {
+    type: mongoose.Types.ObjectId,
+    ref:'User',
+    required: [true, 'Please provide an User']
   },
   amountSpent:{
     type: Number,
@@ -18,6 +18,6 @@ const tagSchema = new mongoose.Schema({
   budget: {
     type: Number,
   }
-});
+}, {timestamps: true});
 
 module.exports = mongoose.model("Tag", tagSchema);
